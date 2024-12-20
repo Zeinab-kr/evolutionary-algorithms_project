@@ -21,6 +21,10 @@ def run_algorithm(
 
     # create primary population
     population = primary_population_creator(population_size, genome_size)
+    # print("start")
+    # for individual in population:
+    #     print(individual.genome)
+    #     print(individual.fitness)
     evaluate_all(population, distance_matrix=distance_matrix)
 
     while True:
@@ -28,13 +32,16 @@ def run_algorithm(
         generated_individuals = []
         for _ in range(int(generation_size / 2)):
             parent1, parent2 = select_two_individual_for_crossover(population)
+            if parent1.fitness < 1000:
+                print(f"parent1: {parent1.genome} {parent1.fitness}, parent2: {parent2.genome} {parent2.fitness}")
+
             child1, child2 = crossover.cross_over(parent1=parent1, parent2=parent2)
             generated_individuals.append(child1)
             generated_individuals.append(child2)
 
         # mutation
         for individual in generated_individuals:
-            mutation.mutation1(individual)
+            mutation.mutation1(individual, MUTATION_RATE)
 
         # TODO: evaluate generated_individuals
         evaluate_all(generated_individuals, distance_matrix=distance_matrix)
@@ -50,9 +57,14 @@ def run_algorithm(
         population = next_generation
 
         # don't change following codes
-        best_fitness_list.append(best_fitness(population))
+        best_individual = best_fitness(population)
+        best_fitness_list.append(best_individual)
         avg_fitness_list.append(avg_fitness(population))
         random.shuffle(population)
+        # print("end")
+        # for individual in population:
+        #     print(individual.genome)
+        #     print(individual.fitness)
 
     return best_individual, best_fitness_list, avg_fitness_list
 
@@ -68,7 +80,7 @@ def next_generation_selection(population: list[Individual], generated_individual
         -> list[Individual]:
     combined_population = population + generated_individuals
 
-    combined_population.sort(key=lambda ind: ind.fitness, reverse=True)
+    combined_population.sort(key=lambda ind: ind.fitness, reverse=False)
 
     next_generation_size = len(population)
     next_generation = combined_population[:next_generation_size]
