@@ -1,5 +1,6 @@
 import random
 
+import crossover
 from individual import Individual
 from evaluation import evaluate, evaluate_all
 from selection import select_two_individual_for_crossover
@@ -23,8 +24,10 @@ def run_algorithm(
         # cross over
         generated_individuals = []
         for _ in range(int(generation_size / 2)):
-            # TODO
-            pass
+            parent1, parent2 = select_two_individual_for_crossover(population)
+            child1, child2 = crossover.cross_over(parent1=parent1, parent2=parent2)
+            generated_individuals.append(child1)
+            generated_individuals.append(child2)
 
         # mutation
         for individual in generated_individuals:
