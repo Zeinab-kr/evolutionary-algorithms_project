@@ -46,11 +46,13 @@ def run_algorithm(
 
     return best_individual, best_fitness_list, avg_fitness_list
 
+
 def primary_population_creator(
     population_size: int, genome_size: int
 ) -> list[Individual]:
     # TODO: this method create primary individual based on input population size and return them as list of individuals
-    pass
+    return [Individual(genome_length=genome_size, generate_random_genome=True) for _ in range(population_size)]
+
 
 def avg_fitness(
         population:list[Individual]
