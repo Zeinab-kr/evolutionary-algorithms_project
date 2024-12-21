@@ -4,7 +4,7 @@ def terminate1(individual_list) -> bool:
     #  yes, return the individual (stop the algorithm), otherwise return None
 
     for individual in individual_list:
-        if -individual.fitness < BEST_FITNESS+10:
+        if -individual.fitness < BEST_FITNESS+0.008:
             return True
 
     return False

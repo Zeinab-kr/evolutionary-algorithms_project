@@ -21,10 +21,6 @@ def run_algorithm(
 
     # create primary population
     population = primary_population_creator(population_size, genome_size)
-    # print("start")
-    # for individual in population:
-    #     print(individual.genome)
-    #     print(individual.fitness)
     evaluate_all(population, distance_matrix=distance_matrix)
 
     i = 0
@@ -34,10 +30,11 @@ def run_algorithm(
         generated_individuals = []
         for _ in range(int(generation_size / 2)):
             parent1, parent2 = select_two_individual_for_crossover(population)
-            if i % 1000 == 1:
-                print(f"parent1: {parent1.genome}:{parent1.fitness}, parent2: {parent2.genome}:{parent2.fitness}")
-
             child1, child2 = crossover.cross_over(parent1=parent1, parent2=parent2)
+            if i % 1000 == 1:
+                print(f"parent1: {parent1.genome}:{parent1.fitness}")
+                print(f"parent2: {parent2.genome}:{parent2.fitness}")
+                print("--------------------------------------------------------------------")
             generated_individuals.append(child1)
             generated_individuals.append(child2)
 
@@ -51,22 +48,18 @@ def run_algorithm(
         # TODO: select next generation by use of 'next_generation_selection' method
         next_generation = next_generation_selection(population, generated_individuals)
 
+        # don't change following codes
+        best_individual = best_fitness(next_generation)
+        best_fitness_list.append(best_individual.fitness)
+        avg_fitness_list.append(avg_fitness(next_generation))
+        random.shuffle(next_generation)
+
         # TODO: check termination condition on generated individuals
         if termination_condition.terminate1(next_generation):
             break
 
         # TODO: redefine 'population' for the next iteration
         population = next_generation
-
-        # don't change following codes
-        best_individual = best_fitness(population)
-        best_fitness_list.append(best_individual)
-        avg_fitness_list.append(avg_fitness(population))
-        random.shuffle(population)
-        # print("end")
-        # for individual in population:
-        #     print(individual.genome)
-        #     print(individual.fitness)
 
     return best_individual, best_fitness_list, avg_fitness_list
 
@@ -78,7 +71,7 @@ def primary_population_creator(
     return [Individual(genome_length=genome_size, generate_random_genome=True) for _ in range(population_size)]
 
 
-def next_generation_selection(population: list[Individual], generated_individuals: list[Individual])\
+def next_generation_selection(population: list[Individual], generated_individuals: list[Individual]) \
         -> list[Individual]:
     combined_population = population + generated_individuals
 
@@ -100,6 +93,6 @@ def avg_fitness(
 
 def best_fitness(
         population: list[Individual]
-) -> float:
+) -> Individual | None:
     # TODO: this method finds best fitness in the population
-    return max(individual.fitness for individual in population) if population else float('-inf')
+    return max(population, key=lambda individual: individual.fitness) if population else None
