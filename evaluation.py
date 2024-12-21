@@ -14,4 +14,4 @@ def evaluate(individual: Individual, distance_matrix: list[list[float]]):
     for i in range(len(individual.genome) - 1):
         total_distance += distance_matrix[individual.genome[i]][individual.genome[i+1]]
 
-    individual.fitness = total_distance
+    individual.fitness = -total_distance
