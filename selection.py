@@ -8,14 +8,15 @@ def select_two_individual_for_crossover(
 ) -> tuple[Individual, Individual]:
 
     # TODO: this method selects two individuals for the crossover algorithm
+    ranked_individuals = sorted(individual_list, key=lambda ind: ind.fitness)
 
-    total_fitness = sum(individual.fitness for individual in individual_list)
-    print(total_fitness)
-    probabilities = [((total_fitness - individual.fitness) / total_fitness) for individual in individual_list]
-    print(probabilities)
-    sorted_indices = sorted(range(len(probabilities)), key=lambda i: probabilities[i], reverse=True)
-    parent1_index = sorted_indices[0]
-    parent2_index = sorted_indices[1]
-    parent1 = individual_list[parent1_index]
-    parent2 = individual_list[parent2_index]
+    total_ranks = sum(i for i in range(len(individual_list)))
+    probabilities = [(len(individual_list) - i) / total_ranks for i in range(len(individual_list))]
+
+    # parent1 = ranked_individuals[probabilities.index(max(probabilities))]
+    # parent2 = random.choices(ranked_individuals, weights=probabilities, k=1)[0]
+
+    parent1 = random.choices(ranked_individuals, weights=probabilities)[0]
+    parent2 = random.choices(ranked_individuals, weights=probabilities)[0]
+
     return parent1, parent2

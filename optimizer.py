@@ -32,8 +32,8 @@ def run_algorithm(
         generated_individuals = []
         for _ in range(int(generation_size / 2)):
             parent1, parent2 = select_two_individual_for_crossover(population)
-            if parent1.fitness < 1000:
-                print(f"parent1: {parent1.genome} {parent1.fitness}, parent2: {parent2.genome} {parent2.fitness}")
+            if parent1.fitness < 600:
+                print(f"parent1: {parent1.fitness}, parent2: {parent2.fitness}")
 
             child1, child2 = crossover.cross_over(parent1=parent1, parent2=parent2)
             generated_individuals.append(child1)
@@ -81,7 +81,7 @@ def next_generation_selection(population: list[Individual], generated_individual
     combined_population = population + generated_individuals
 
     combined_population.sort(key=lambda ind: ind.fitness, reverse=False)
-
+    
     next_generation_size = len(population)
     next_generation = combined_population[:next_generation_size]
 
