@@ -31,7 +31,7 @@ def run_algorithm(
         for _ in range(int(generation_size / 2)):
             parent1, parent2 = select_two_individual_for_crossover(population)
             child1, child2 = crossover.cross_over(parent1=parent1, parent2=parent2)
-            if i % 1000 == 1:
+            if i % 5000 == 1:
                 print(f"parent1: {parent1.genome}:{parent1.fitness}")
                 print(f"parent2: {parent2.genome}:{parent2.fitness}")
                 print("--------------------------------------------------------------------")

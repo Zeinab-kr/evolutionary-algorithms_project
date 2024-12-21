@@ -23,7 +23,7 @@ def select_two_individual_for_crossover(
     rank_probabilities = [(generation_size - i) / total_ranks for i in range(generation_size)]
     weights = [fitness_probabilities[i] * rank_probabilities[i] for i in range(generation_size)]
 
-    parent1 = random.choices(ranked_individuals, weights=rank_probabilities)[0]
-    parent2 = random.choices(ranked_individuals, weights=rank_probabilities)[0]
+    parent1 = random.choices(ranked_individuals, weights=fitness_probabilities)[0]
+    parent2 = random.choices(ranked_individuals, weights=fitness_probabilities)[0]
 
     return parent1, parent2
